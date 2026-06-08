@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foto do Visitante</title>
+    <link rel="icon" href="https://dl.dropbox.com/scl/fi/r2a1ld2xtkxkdfc8dlsr5/tool.png?rlkey=schd5t3as8tzf71ld5dj07972&st=p6pfvznp&dl=0" type="image/jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .voltar-tela-inicial { position: fixed; top: 0; left: 0; right: 0; display: flex; gap: 10px; z-index: 999; background:#222; padding:10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); justify-content: center; }
+        .voltar-tela-inicial button { width: 50px; height: 50px; background: #eee; border: 2px solid #000; font-size: 24px; cursor: pointer; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: black; }
+    </style>
+</head>
+<body class="bg-gray-100 p-4">
+
+    <div class="voltar-tela-inicial">
+       <button onclick="window.location.href='https://armandodecampos.github.io/Ferramentas-Trabalho/'">
+          <i class="fas fa-home"></i>
+        </button>
+    </div>
+    
+    <br><br><br><br>
+
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-xl border border-gray-200">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">Foto do Visitante</h2>
+        
+        <div class="p-6 border-2 border-dashed border-gray-300 rounded-lg text-center" id="image-drop-area">
+            <p class="text-gray-500 mb-4">Cole uma imagem aqui (Ctrl+V)</p>
+            <img id="pasted-image" class="max-h-80 mx-auto hidden rounded shadow-md border" alt="Foto colada">
+            <button id="download-image-btn" class="hidden mt-6 w-full bg-green-600 text-white font-semibold py-3 rounded-lg shadow-sm hover:bg-green-700 transition">
+                <i class="fas fa-download mr-2"></i> Baixar Imagem
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const imageElement = document.getElementById('pasted-image');
+        const downloadBtn = document.getElementById('download-image-btn');
+
+        // Captura imagem colada
+        window.addEventListener('paste', (e) => {
+            const items = e.clipboardData.items;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    const blob = items[i].getAsFile();
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        imageElement.src = event.target.result;
+                        imageElement.classList.remove('hidden');
+                        downloadBtn.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(blob);
+                }
+            }
+        });
+
+        // Download imagem
+        downloadBtn.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.href = imageElement.src;
+            link.download = 'Foto para cadastro.png';
+            link.click();
+        });
+    </script>
+</body>
+</html>
